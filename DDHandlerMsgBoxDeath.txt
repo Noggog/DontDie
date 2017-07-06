@@ -1,0 +1,12 @@
+scn DDHandlerMsgBoxDeath
+
+int iButtonPressedIndex
+
+begin _Function { iButtonPressedIndex }
+	if eval !iButtonPressedIndex ;0 is Yes.
+		; Nothing
+	else
+		; Revert death that previously was added
+		Call DDExecuteDeathIncrement -1
+	endif
+end

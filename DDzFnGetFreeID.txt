@@ -1,0 +1,7 @@
+scn DDzFnGetFreeID
+
+string_var logPath
+
+Begin Function { logPath }
+SetFunctionValue ToNumber (Call DDzzFnReadFromLog2 logPath)[1] ;aLogContents[1] is the last generated iSaveID.
+end

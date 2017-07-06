@@ -1,0 +1,12 @@
+scn DDzFnTryGetNearbySaveIDs
+
+array_var aNearbySaveIDs
+long iSaveID
+
+begin Function { iSaveID }
+	if eval TestExpr (aNearbySaveIDs := DD.m2dSaveEntries[iSaveID][DD.eNearbySaveIDs])
+		SetFunctionValue DD.m2dSaveEntries[iSaveID][DD.eNearbySaveIDs]
+	else
+		SetFunctionValue ar_Construct "Array"
+	endif
+end

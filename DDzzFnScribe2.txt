@@ -1,0 +1,11 @@
+scn DDzzFnScribe2
+
+;After quite a few tiring experiences with the syntax and use of Scribe within the OBSE compiler, I've made a temporary more user-friendly version of it.
+
+string_var sString
+string_var sLogName
+
+begin _Function { sLogName sString }
+RegisterLog $sLogName
+Scribe $sString+"|"+$sLogName
+end

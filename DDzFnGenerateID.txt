@@ -1,0 +1,13 @@
+scn DDzFnGenerateID
+
+array_var aLogContents
+int iReturning
+string_var logPath
+
+Begin Function { logPath }
+let aLogContents := Call DDzzFnReadFromLog2 logPath
+let iReturning := (ToNumber aLogContents[1]) + 1
+let aLogContents[1] := $iReturning
+Call DDzFnRewriteLog logPath aLogContents
+SetFunctionValue iReturning
+end

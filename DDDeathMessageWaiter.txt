@@ -1,0 +1,12 @@
+scn DDDeathMessageWaiter
+
+array_var arr
+
+begin Function { arr }
+	if DD.bMsgBoxOnDeath
+		; Prompt user for bBumpDeathCounts
+		Call MsgBoxWithHandler DDHandlerMsgBoxDeath ar_List "Should this death count?","Yes","No"
+	else
+		Call DDHandlerMsgBoxDeath 0
+	endif
+end

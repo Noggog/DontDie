@@ -1,0 +1,23 @@
+scn DDzFnRewriteLog
+
+string_var svLogName
+array_var aLogContents
+
+array_var Iter
+string_var svString
+
+Begin _Function { svLogName aLogContents }
+; Delete Old Log
+UnregisterLog $svLogName 0 1
+; Write New Log
+RegisterLog $svLogName
+ForEach Iter <- aLogContents
+	if eval Iter["Key"] == 0 ;0::LogFilePath
+		continue
+	endif
+	let svString := $(*Iter)+"|"+$svLogName
+	Scribe $svString
+Loop
+; Close
+sv_Destruct svString
+end

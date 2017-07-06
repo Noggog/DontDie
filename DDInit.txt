@@ -1,0 +1,52 @@
+scn DDInit
+
+int iDeathCount
+
+Begin _Function { }
+	if eval Call InitOnStart2
+		; SetEventHandlers
+		SetEventHandler "OnDeath" DDHandlerDeathOfPlayer "ref"::playerRef
+		SetEventHandler "SaveGame" DDHandlerSaveGame
+	elseif eval Call InitPostLoad2
+		; Enumerations
+		Let DD.eDeathCount := 0
+		Let DD.eGMTimestampDay := 1
+		Let DD.eGMTimestampHour := 2
+		Let DD.eNearbySaveIDs := 3
+		; Internal Settings
+		Let DD.sCommonDataLogName := "DontDieData"
+		if (DD.TimelineID == 0)
+			let DD.TimelineID := Call DDzFnGenerateID DD.sCommonDataLogName
+		endif
+		Let DD.sSpecificDataLogName := "DontDieData - " + $DD.TimelineID + " - " + (GetName PlayerRef)
+		; Establish iSaveID
+		let DD.iSaveID := DD.iSaveIDPreparedForNextSave
+		Let DD.iSaveIDPreparedForNextSave := Call DDzFnGetFreeSaveID
+		;Debug
+		Call CFDebug 5,"DDInit\InitPostLoad2\DD.iSaveID:"+$DD.iSaveID
+		; Establish DD.m2dSaveEntries
+		Let DD.m2dSaveEntries := Call DDzFnGetSaveEntries
+		; Establish iDeathCount
+		if eval !TestExpr (iDeathCount := DD.m2dSaveEntries[DD.iSaveID][DD.eDeathCount])
+			Let iDeathCount := 0
+		endif
+		; Apply Penalties
+		Call CFDebug 5,"DDInit\InitPostLoad2\iDeathCount:"+$iDeathCount
+		if eval iDeathCount
+			Call DispatchEvent2 EVENTDeathPenaltyPostLoad ar_List iDeathCount
+		endif
+	elseif eval Call InitInGame2
+		; Establish iDeathCount
+		if eval !TestExpr (iDeathCount := DD.m2dSaveEntries[DD.iSaveID][DD.eDeathCount])
+			Let iDeathCount := 0
+		endif
+		; Apply Penalties
+		Call CFDebug 5,"DDInit\InitInGame2\iDeathCount:"+$iDeathCount
+		if (DD.bReportDeathsOnLoad && iDeathCount > 0)
+			Message "Deaths Applied: %G", iDeathCount
+		endif
+		if eval iDeathCount
+			Call DispatchEvent2 EVENTDeathPenaltyInGame ar_List iDeathCount
+		endif
+	endif
+end

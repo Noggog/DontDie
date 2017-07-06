@@ -1,0 +1,22 @@
+scn DDExecuteDeathIncrement
+
+short amount
+array_var Iter
+array_var aBumpedSaveIDs
+
+begin _Function { amount }
+	; Increment iDeathCount for valid aNearbySaveIDs
+	ForEach Iter <- ar_Copy Call DDzFnTryGetNearbySaveIDs DD.iSaveID ;Iter is iNearbySaveID
+		if eval Call TimestampComp3 DD.m2dSaveEntries[*Iter][DD.eGMTimestampDay],DD.m2dSaveEntries[*Iter][DD.eGMTimestampHour],SB.iGameModeDaysPassed,SB.fGameModeGameHour,DD.fHourDurationFromDeathToAffectedSave
+			Let DD.m2dSaveEntries[*Iter][DD.eDeathCount] += amount
+			if eval Call CFDebugIsLevelMet 5
+				let aBumpedSaveIDs := Call ArTryCreate aBumpedSaveIDs 0
+				ar_Append aBumpedSaveIDs (*Iter)
+			endif
+		endif
+	loop
+	if eval Call CFDebugIsLevelMet 5
+		Call CFDebug 5,"DDHandlerMsgBoxDeath\aBumpedSaveIDs(Size:"+$(ar_Size aBumpedSaveIDs)+"):"+Call NarrateCollection2 aBumpedSaveIDs
+	endif
+	Call DDzFnStoreSaveEntries DD.m2dSaveEntries
+end

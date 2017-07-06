@@ -1,0 +1,50 @@
+scn DDzFnGetSaveEntries
+
+array_var m2dSaveEntries ;m2dSaveEntries[iSaveID:aSaveEntry][0:ManualEditingString,1:iDeathCount,2:iGMTimestampDay,3:fGMTimestampHour,4:aNearbySaveIDs]
+array_var aLogContents
+array_var Iter
+string_var sLine ;sLine. "ManualEditingString:iDeathCount,iSaveID,iGMTimestampDay,iGMTimestampHour,0iNearbySaveID,1iNearbySaveID, ..."
+int iDelimPosition
+
+int iSaveID
+int iGMTimestampDay
+float fGMTimestampHour
+int iDeathCount
+array_var aNearbySaveIDs
+
+Begin _Function { }
+	let m2dSaveEntries := ar_Construct "map"
+	let aLogContents := Call DDzzFnReadFromLog2 DD.sSpecificDataLogName
+	ForEach Iter <- aLogContents
+		if eval Call IsInCollection (&Iter["Key"]) ar_List 0,1,2 ;0:LogPath 1:iNextSaveID 2:Legend Text
+			continue
+		endif
+		let sLine := *Iter
+		; iDeathCount
+		let iDelimPosition := sv_Find ",",sLine
+		let iDeathCount := ToNumber sLine[0:iDelimPosition-1]
+		sv_Erase sLine,0,iDelimPosition+1
+		; iSaveID
+		let iDelimPosition := sv_Find ",",sLine
+		let iSaveID := ToNumber sLine[0:iDelimPosition-1]
+		sv_Erase sLine,0,iDelimPosition+1
+		; iGMTimestampDay
+		let iDelimPosition := sv_Find ",",sLine
+		let iGMTimestampDay := ToNumber sLine[0:iDelimPosition-1]
+		sv_Erase sLine,0,iDelimPosition+1
+		; fGMTimestampHour
+		let iDelimPosition := sv_Find ",",sLine
+		let fGMTimestampHour := ToNumber sLine[0:iDelimPosition-1]
+		sv_Erase sLine,0,iDelimPosition+1
+		; aNearbySaveIDs
+		let aNearbySaveIDs := ar_Construct "array"
+		While (iDelimPosition := sv_Find ",",sLine)!=-1
+			ar_Append aNearbySaveIDs (ToNumber sLine[0:iDelimPosition-1])
+			sv_Erase sLine,0,iDelimPosition+1
+		Loop
+		;
+		let m2dSaveEntries[iSaveID] := ar_List iDeathCount,iGMTimestampDay,fGMTimestampHour,aNearbySaveIDs
+	Loop
+	SetFunctionValue m2dSaveEntries
+	; Close
+end

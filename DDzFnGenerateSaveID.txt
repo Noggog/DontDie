@@ -1,0 +1,9 @@
+scn DDzFnGenerateSaveID
+
+int iReturning
+
+Begin Function { }
+let iReturning := Call DDzfnGenerateID DD.sSpecificDataLogName
+Call CFDebug 5 "DDzFnGenerateSaveID\Generated iSaveID in preparation for next save:" + $iReturning
+SetFunctionValue iReturning
+end

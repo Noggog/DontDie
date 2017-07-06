@@ -1,0 +1,9 @@
+scn DDHandlerDeathOfPlayer
+
+ref rDier
+ref rKiller
+
+begin _Function { rDier rKiller }
+	Call DDExecuteDeathIncrement 1
+	Call Delay2 5, 2, DDDeathMessageWaiter, ar_Null
+end

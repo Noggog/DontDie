@@ -1,0 +1,22 @@
+scn DDzFnStoreSaveEntries
+
+array_var m2dSaveEntries ;m2dSaveEntries[iSaveID:aSaveEntry][0:ManualEditingString,1:iDeathCount,2:iGMTimestampDay,3:fGMTimestampHour,4:aNearbySaveIDs]
+array_var aLogContents
+array_var InnerIter
+array_var OuterIter
+string_var sLine ;sLine. "ManualEditingString:iDeathCount,iSaveID,iGMTimestampDay,iGMTimestampHour,0iNearbySaveID,1iNearbySaveID, ..."
+
+Begin _Function { m2dSaveEntries }
+	let aLogContents := ar_List 0,$(Call DDzFnGetFreeSaveID) ;index 0 is ignored.
+	ar_Append aLogContents "Death Count, Save ID, Day, Hour, Nearby Save ID List"
+	ForEach OuterIter <- m2dSaveEntries
+		let sLine := $(*OuterIter)[DD.eDeathCount]+","+$OuterIter["Key"]+","+$(*OuterIter)[DD.eGMTimestampDay]+","+$(*OuterIter)[DD.eGMTimestampHour]+","
+		ForEach InnerIter <- ((*OuterIter)[DD.eNearbySaveIDs]) ;aNearbySaves
+			let sLine := sLine+$*InnerIter+","
+		Loop
+		ar_Append aLogContents sLine
+	Loop
+	Call DDzFnRewriteLog DD.sSpecificDataLogName aLogContents
+	; Close
+	sv_Destruct sLine
+end

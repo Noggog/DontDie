@@ -1,0 +1,31 @@
+scn DDHandlerSaveGame
+
+string_var sSaveFullPath
+
+int iOldSaveID
+array_var aNearbySaveIDs
+array_var Iter
+
+begin _Function { sSaveFullPath }
+	; Establish DD.iSaveID
+	let iOldSaveID := DD.iSaveID
+	Let DD.iSaveID := DD.iSaveIDPreparedForNextSave
+	Let DD.iSaveIDPreparedForNextSave := Call DDzFnGenerateSaveID
+	; Generate aNearbySaveIDs for this save. Also, store DD.iSaveID in valid aOldNearbySaveIDs's aNearbySaveIDs.
+	let aNearbySaveIDs := ar_Construct "Array"
+	ForEach Iter <- ar_Copy (Call DDzFnTryGetNearbySaveIDs iOldSaveID) ;*Iter is iNearbySaveID
+		if eval (Call TimestampComp3 DD.m2dSaveEntries[*Iter][DD.eGMTimestampDay],DD.m2dSaveEntries[*Iter][DD.eGMTimestampHour],SB.iGameModeDaysPassed,SB.fGameModeGameHour,DD.fHourDurationFromDeathToAffectedSave)
+			if eval DD.bMergeNearbyTimelines			
+				ar_Append DD.m2dSaveEntries[*Iter][DD.eNearbySaveIDs] DD.iSaveID
+			endif
+			ar_Append aNearbySaveIDs (*Iter)
+		endif
+	Loop
+	ar_Append aNearbySaveIDs DD.iSaveID
+	; Generate and Store aSaveEntry in m2dSaveEntries
+	Let DD.m2dSaveEntries[DD.iSaveID] := ar_List 0,SB.iGameModeDaysPassed,SB.fGameModeGameHour,aNearbySaveIDs
+	if eval Call CFDebugIsLevelMet 5
+		Call CFDebug 5,"DDHandlerSaveGame\End\m2dSaveEntries..%r"+Call NarrateCollection DD.m2dSaveEntries
+	endif
+	Call DDzFnStoreSaveEntries DD.m2dSaveEntries
+end

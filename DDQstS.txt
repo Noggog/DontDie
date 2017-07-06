@@ -1,0 +1,21 @@
+scn DDQstS
+
+; Options
+float fHourDurationFromDeathToAffectedSave
+short bMsgBoxOnDeath
+short bReportDeathsOnLoad
+short bMergeNearbyTimelines
+
+; Core
+long iSaveIDPreparedForNextSave
+long iSaveID
+long TimelineID
+string_var sCommonDataLogName
+string_var sSpecificDataLogName
+array_var m2dSaveEntries ;m2dSaveEntries[iSaveID:aSaveEntry][0:ManualEditingString,1:iDeathCount,2:iGMTimestampDay,3:fGMTimestampHour,4:aNearbySaveIDs]
+
+; Enum
+int eGMTimestampDay
+int eGMTimestampHour
+int eDeathCount
+int eNearbySaveIDs

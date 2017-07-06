@@ -1,0 +1,5 @@
+scn DDzFnGetFreeSaveID
+
+Begin Function { }
+SetFunctionValue Call DDzFnGetFreeID DD.sSpecificDataLogName
+end
