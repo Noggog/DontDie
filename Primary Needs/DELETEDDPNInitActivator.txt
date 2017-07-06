@@ -1,0 +1,15 @@
+scn DELETEDDPNInitActivator
+
+float fChargePerHour
+short iWellActiveDistance
+
+begin _OnActivate
+if eval Call InitPostLoad2
+	; Default
+	let fChargePerHour := 1
+	let iWellActiveDistance := 50
+	; Read
+	RunBatchScript "Data\ini\ChargeRestoration.ini" 1
+	; Pass
+endif
+end

@@ -1,0 +1,8 @@
+scn DDPNQstS
+
+float minAllowedFoodPercent
+float minAllowedThirstPercent
+float minAllowedSleepPercent
+float amountFoodPercentPerPenalty
+float amountThirstPercentPerPenalty
+float amountSleepPercentPerPenalty

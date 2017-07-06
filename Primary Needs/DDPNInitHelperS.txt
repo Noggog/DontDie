@@ -1,0 +1,28 @@
+scn DDPNInitHelperS
+
+float minAllowedFoodPercent
+float minAllowedThirstPercent
+float minAllowedSleepPercent
+float amountFoodPercentPerPenalty
+float amountThirstPercentPerPenalty
+float amountSleepPercentPerPenalty
+
+begin _OnActivate
+printc "Loading Dont Die Primary Needs INI"
+; Default
+let minAllowedFoodPercent := 0.2
+let minAllowedThirstPercent := 0.2
+let minAllowedSleepPercent := 0.2
+let amountFoodPercentPerPenalty := 0.2
+let amountThirstPercentPerPenalty := 0.2
+let amountSleepPercentPerPenalty := 0.1
+; Read
+RunBatchScript "Data\ini\DontDiePrimaryNeeds.ini"
+; Pass
+let DDPN.minAllowedFoodPercent := minAllowedFoodPercent
+let DDPN.minAllowedThirstPercent := minAllowedThirstPercent
+let DDPN.minAllowedSleepPercent := minAllowedSleepPercent
+let DDPN.amountFoodPercentPerPenalty := amountFoodPercentPerPenalty
+let DDPN.amountThirstPercentPerPenalty := amountThirstPercentPerPenalty
+let DDPN.amountSleepPercentPerPenalty := amountSleepPercentPerPenalty
+end

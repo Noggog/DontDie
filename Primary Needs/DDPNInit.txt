@@ -1,0 +1,7 @@
+scn DDPNInit
+
+begin Function { }
+if eval Call InitPostLoad2
+	Call SetEventHandler2 EVENTDealthPenaltyApplication DDPNDeathHandler
+endif
+end

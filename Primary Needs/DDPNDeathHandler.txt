@@ -1,0 +1,19 @@
+scn DDPNDeathHandler
+
+array_var params
+int numDeaths
+
+begin _function { params }
+;	
+	let numDeaths := params[0]
+
+	printc "Calculating Food Penalty " + $BPN.ini_statloss_food
+	let BPN.timeFood := Call DDPNCalculator numDeaths BPN.timeFood BPN.ini_statloss_food DDPN.amountFoodPercentPerPenalty DDPN.minAllowedFoodPercent
+	
+	printc "Calculating Sleep Penalty"
+	let BPN.timeSleep := Call DDPNCalculator numDeaths BPN.timeSleep BPN.ini_statloss_sleep DDPN.amountSleepPercentPerPenalty DDPN.minAllowedSleepPercent
+
+	printc "Calculating Drink Penalty"
+	let BPN.timeDrink := Call DDPNCalculator numDeaths BPN.timeDrink BPN.ini_statloss_drink DDPN.amountThirstPercentPerPenalty DDPN.minAllowedThirstPercent
+
+end
