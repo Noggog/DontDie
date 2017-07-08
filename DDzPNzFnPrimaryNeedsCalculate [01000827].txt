@@ -1,0 +1,29 @@
+scn DDzPNzFnPrimaryNeedsCalculate
+
+int numDeaths
+float totalDecreaseHrs
+float pctPerPenalty
+float minAllowedPct
+float needTime
+
+float totalDecreaseMins
+float pctToDecrease
+float curPct
+float targetPct
+float absToDecrease
+float result
+
+begin _function { numDeaths, needTime, totalDecreaseHrs, pctPerPenalty, minAllowedPct }
+	let totalDecreaseMins := (totalDecreaseHrs * 60)
+	let curPct := 1 - (((Call GetQuestVariable2F "BPN.currenttime") - needTime) / totalDecreaseMins)
+	let targetPct := curPct - (pctPerPenalty * numDeaths)
+	if (targetPct < minAllowedPct)
+		let targetPct := minAllowedPct
+	endif
+	Call CFDebug 5,"Target Pct:" + $targetPct
+	let pctToDecrease := curPct - targetPct
+	let absToDecrease := pctToDecrease * totalDecreaseMins
+	let result := needTime - absToDecrease
+	SetFunctionValue result
+end
+

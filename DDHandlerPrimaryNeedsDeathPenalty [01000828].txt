@@ -1,0 +1,21 @@
+scn DDHandlerPrimaryNeedsDeathPenalty
+
+array_var params
+int numDeaths
+
+begin _function { params }
+	
+	let numDeaths := params[0]
+	
+	Call CFDebug 5,"DDHandlerPrimaryNeedsDeathPenalty\Calculating Primary Needs Penalties"
+
+	RunScriptLine "set BPN.timeFood to " +$(Call DDzPNzFnPrimaryNeedsCalculate numDeaths (Call GetQuestVariable2F "BPN.timeFood") (Call GetQuestVariable2F "BPN.ini_statloss_food") (DD.fPNAmountFoodPercentPerPenalty) (DD.fPNMinAllowedFoodPercent))
+	RunScriptLine "set BPN.timeSleep to " +$(Call DDzPNzFnPrimaryNeedsCalculate numDeaths (Call GetQuestVariable2F "BPN.timeSleep") (Call GetQuestVariable2F "BPN.ini_statloss_sleep") (DD.fPNAmountSleepPercentPerPenalty) (DD.fPNMinAllowedSleepPercent))
+	RunScriptLine "set BPN.timeDrink to " +$(Call DDzPNzFnPrimaryNeedsCalculate numDeaths (Call GetQuestVariable2F "BPN.timeDrink") (Call GetQuestVariable2F "BPN.ini_statloss_drink") (DD.fPNAmountThirstPercentPerPenalty) (DD.fPNMinAllowedThirstPercent))
+	
+;	let BPN.timeFood := Call DDzzzFnPrimaryNeedsCalculate numDeaths BPN.timeFood BPN.ini_statloss_food DDPN.amountFoodPercentPerPenalty DDPN.minAllowedFoodPercent
+;	let BPN.timeSleep := Call DDzzzFnPrimaryNeedsCalculate numDeaths BPN.timeSleep BPN.ini_statloss_sleep DDPN.amountSleepPercentPerPenalty DDPN.minAllowedSleepPercent
+;	let BPN.timeDrink := Call DDzzzFnPrimaryNeedsCalculate numDeaths BPN.timeDrink BPN.ini_statloss_drink DDPN.amountThirstPercentPerPenalty DDPN.minAllowedThirstPercent
+
+end
+

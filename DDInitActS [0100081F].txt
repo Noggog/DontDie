@@ -1,0 +1,58 @@
+scn DDInitActS
+
+float fHourDurationFromDeathToAffectedSave
+int iDontDieDebugThreshold
+short bMsgBoxOnDeath
+short bReportDeathsOnLoad
+short bMergeNearbyTimelines
+;PrimaryNeedsVars
+float fPNMinAllowedFoodPercent
+float fPNMinAllowedThirstPercent
+float fPNMinAllowedSleepPercent
+float fPNAmountFoodPercentPerPenalty
+float fPNAmountThirstPercentPerPenalty
+float fPNAmountSleepPercentPerPenalty
+short bPNAllowPrimaryNeedsPenalties
+
+Begin _OnActivate
+	if eval Call InitPostLoad1
+		; Option Defaults
+		Let fHourDurationFromDeathToAffectedSave := 0.5
+		let iDontDieDebugThreshold := 2
+		let bMsgBoxOnDeath := 1
+		let bMergeNearbyTimelines := 1
+		let bReportDeathsOnLoad := 1
+		; Load INI
+		RunBatchScript "Data\ini\DontDie.ini" 1
+		; Pass values
+		let DD.fHourDurationFromDeathToAffectedSave := fHourDurationFromDeathToAffectedSave
+		Call CFDebugSetModThreshold iDontDieDebugThreshold
+		let DD.bMsgBoxOnDeath := bMsgBoxOnDeath
+		let DD.bMergeNearbyTimelines := bMergeNearbyTimelines
+		let DD.bReportDeathsOnLoad := bReportDeathsOnLoad
+		;Debug
+		Call CFDebug 5,"DDInitActS\fHourDurationFromDeathToAffectedSave:"+$fHourDurationFromDeathToAffectedSave+" iDontDieDebugThreshold:"+$iDontDieDebugThreshold+" bMsgBoxOnDeath:"+$bMsgBoxOnDeath+" bMergeNearbyTimelines:"+$bMergeNearbyTimelines
+		
+		;  Primary Needs Settings..
+		; Default
+		let bPNAllowPrimaryNeedsPenalties := 1
+		let fPNMinAllowedFoodPercent := 0.2
+		let fPNMinAllowedThirstPercent := 0.2
+		let fPNMinAllowedSleepPercent := 0.2
+		let fPNAmountFoodPercentPerPenalty := 0.2
+		let fPNAmountThirstPercentPerPenalty := 0.2
+		let fPNAmountSleepPercentPerPenalty := 0.1
+		; Read
+		RunBatchScript "Data\ini\DontDiePrimaryNeeds.ini"
+		; Pass
+		let DD.bPNAllowPrimaryNeedsPenalties := bPNAllowPrimaryNeedsPenalties
+		let DD.fPNMinAllowedFoodPercent := fPNMinAllowedFoodPercent
+		let DD.fPNMinAllowedThirstPercent := fPNMinAllowedThirstPercent
+		let DD.fPNMinAllowedSleepPercent := fPNMinAllowedSleepPercent
+		let DD.fPNAmountFoodPercentPerPenalty := fPNAmountFoodPercentPerPenalty
+		let DD.fPNAmountThirstPercentPerPenalty := fPNAmountThirstPercentPerPenalty
+		let DD.fPNAmountSleepPercentPerPenalty := fPNAmountSleepPercentPerPenalty
+		;Debug
+		Call CFDebug 5,"DDInitActS\bPNAllowPrimaryNeedsPenalties:"+$bPNAllowPrimaryNeedsPenalties+" fPNMinAllowedFoodPercent:"+$fPNMinAllowedFoodPercent+" fPNMinAllowedThirstPercent:"+$fPNMinAllowedThirstPercent+" fPNMinAllowedSleepPercent:"+$fPNMinAllowedSleepPercent+" fPNAmountFoodPercentPerPenalty:"+$fPNAmountFoodPercentPerPenalty+" fPNAmountThirstPercentPerPenalty:"+$fPNAmountThirstPercentPerPenalty+" fPNAmountSleepPercentPerPenalty:"+$fPNAmountSleepPercentPerPenalty
+	endif
+end

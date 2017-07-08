@@ -5,6 +5,14 @@ float fHourDurationFromDeathToAffectedSave
 short bMsgBoxOnDeath
 short bReportDeathsOnLoad
 short bMergeNearbyTimelines
+;PrimaryNeedsOptions
+short bPNAllowPrimaryNeedsPenalties
+float fPNMinAllowedFoodPercent
+float fPNMinAllowedThirstPercent
+float fPNMinAllowedSleepPercent
+float fPNAmountFoodPercentPerPenalty
+float fPNAmountThirstPercentPerPenalty
+float fPNAmountSleepPercentPerPenalty
 
 ; Core
 long iSaveIDPreparedForNextSave

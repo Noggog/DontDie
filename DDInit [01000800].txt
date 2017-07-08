@@ -26,6 +26,11 @@ Begin _Function { }
 		Call CFDebug 5,"DDInit\InitPostLoad2\DD.iSaveID:"+$DD.iSaveID
 		; Establish DD.m2dSaveEntries
 		Let DD.m2dSaveEntries := Call DDzFnGetSaveEntries
+		; If Primary Needs exists, hook its handler
+		if eval (IsModLoaded "Basic Primary Needs.esp") && DD.bPNAllowPrimaryNeedsPenalties
+			Call CFDebug 5,"DDInit\Hooking BasicPrimaryNeeds-DontDie handler"
+			Call SetEventHandler2 EVENTDeathPenaltyPostLoad DDHandlerPrimaryNeedsDeathPenalty
+		endif
 		; Establish iDeathCount
 		if eval !TestExpr (iDeathCount := DD.m2dSaveEntries[DD.iSaveID][DD.eDeathCount])
 			Let iDeathCount := 0
